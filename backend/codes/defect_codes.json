@@ -1,0 +1,20 @@
+[
+  {
+    "code": "DEMO-001",
+    "category": "Surface",
+    "subcategory": "Visible mark",
+    "description": "A visible surface mark requiring human review."
+  },
+  {
+    "code": "DEMO-002",
+    "category": "Alignment",
+    "subcategory": "Uneven position",
+    "description": "An item appears out of alignment; verify from another angle."
+  },
+  {
+    "code": "DEMO-003",
+    "category": "Housekeeping",
+    "subcategory": "Obstruction",
+    "description": "An object appears to obstruct an intended route; verify on site."
+  }
+]
