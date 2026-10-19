@@ -64,3 +64,7 @@ retention controls before hosting it for multiple users. CSRF tokens are not use
 This is a separately prepared portfolio edition with fresh history. Private deployment settings,
 credentials, operational records, uploads, backups and organisation-specific assets are excluded.
 See [PUBLIC_EDITION.md](PUBLIC_EDITION.md). No deployment workflows are included.
+
+## Automated checks
+
+GitHub Actions runs offline regression checks on pushes and pull requests. These do not deploy the app, call paid AI services or establish model quality. A separate job builds the React frontend. 
