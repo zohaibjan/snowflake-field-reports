@@ -1,5 +1,5 @@
 """
-Snowflake Service for FIELD Inspection
+Snowflake Service for Field Notes Studio
 Handles Snowflake connections, file uploads, and AI operations
 """
 import os
@@ -719,7 +719,7 @@ Respond with ONLY the JSON structure shown above."""
         try:
             escaped_transcript = transcript.replace("'", "''")
             
-            prompt = f"""You are analyzing a building inspection transcript to extract specific defects that can be matched to {num_images} photographs.
+            prompt = f"""You are analyzing a field observation transcript to extract specific defects that can be matched to {num_images} photographs.
 
 Analyze the transcript and identify exactly {num_images} distinct defects or issues mentioned. For each defect, provide:
 1. The specific location
@@ -880,9 +880,9 @@ Respond with a concise, professional caption (1-2 sentences) describing the defe
                 if "drain" in context.lower():
                     context_summary += "Drainage defects. "
                 if not context_summary:
-                    context_summary = "Building construction defects identified. "
+                    context_summary = "Field observations identified. "
             else:
-                context_summary = "Building inspection defects. "
+                context_summary = "Field observations. "
             
             defect_options_text = ""
             if defects:
@@ -967,7 +967,7 @@ EXAMPLE FORMAT (do not copy - this is just to show structure):
                 except Exception as e:
                     logger.error(f"Failed to analyze image {stage_filename}: {e}")
                     pass  # Do not log uploaded content or personal data.
-                    fallback_caption = f"Building defect {i+1} - see inspection notes"
+                    fallback_caption = f"Observation {i+1} - see inspection notes"
                     captions.append(fallback_caption)
                     pass  # Do not log uploaded content or personal data.
 
@@ -1015,7 +1015,7 @@ EXAMPLE FORMAT (do not copy - this is just to show structure):
         """
         try:
             if not transcript_segment or not transcript_segment.strip():
-                return f"Defect {image_number} - Building inspection image"
+                return f"Defect {image_number} - Field observation image"
             
             escaped_segment = transcript_segment.replace("'", "''")
             
@@ -1051,7 +1051,7 @@ Create a 1-2 sentence caption describing what might be shown in a photograph rel
         except Exception as e:
             logger.error(f"Transcript-based caption generation failed: {e}")
         
-        return f"Defect {image_number} - Building inspection image"
+        return f"Defect {image_number} - Field observation image"
     
     def generate_image_caption(self, transcript: str, image_number: int, total_images: int) -> str:
         """

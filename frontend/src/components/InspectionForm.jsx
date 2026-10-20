@@ -342,7 +342,7 @@ function InspectionForm() {
       const response = await axiosInstance.get(healthUrl, { timeout: 5000 });
       if (response.data?.status === 'healthy') {
         setBackendReady(true);
-        setBackendStatusMessage('Backend is ready. You can start your inspection.');
+        setBackendStatusMessage('Backend is ready. You can start your report.');
       } else {
         setBackendReady(false);
         setBackendStatusMessage(response.data?.message || 'Backend is starting up.');
@@ -526,7 +526,7 @@ function InspectionForm() {
   // Section 1: Process Basic Info and Audio
   const handleProcessAudio = async () => {
     if (!inspectorName || !contractorName || !siteAddress) {
-      setError('Please fill in Inspector Name, Contractor Name, and Site Address');
+      setError('Please fill in Reviewer Name, Supplier Name, and Site Address');
       return;
     }
     
@@ -766,10 +766,10 @@ function InspectionForm() {
   }, []);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 max-w-6xl mx-auto" role="main" aria-label="Inspection Form">
+    <div className="bg-white rounded-lg shadow-lg p-8 max-w-6xl mx-auto" role="main" aria-label="Report Form">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-REFERENCE-navy mb-2">AI Assisted Services Trade Unit Inspection Report Generator</h1>
+        <h1 className="text-4xl font-bold text-REFERENCE-navy mb-2">Field Notes Studio</h1>
       </div>
       
       {/* Backend Status */}
@@ -832,7 +832,7 @@ function InspectionForm() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Inspector Name *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Reviewer Name *</label>
               <input
                 type="text"
                 value={inspectorName}
@@ -843,7 +843,7 @@ function InspectionForm() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Contractor Name *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Supplier Name *</label>
               <input
                 type="text"
                 value={contractorName}
@@ -938,7 +938,7 @@ function InspectionForm() {
                     )}
                     <div className="mt-2 md:hidden">
                       <button type="button" onClick={(e) => { e.preventDefault(); if (audioInputRef && audioInputRef.current) audioInputRef.current.click(); }} className="px-3 py-1 bg-REFERENCE-navy text-white rounded text-xs">Choose</button>
-                      <p className="text-xs text-gray-600 mt-2">Audio recording is required for inspection report generation.</p>
+                      <p className="text-xs text-gray-600 mt-2">Audio recording is required for report generation.</p>
                     </div>
                     {/* On some embedded browsers the picker may be limited — try the device Files app if the picker doesn't show audio files. */}
 
@@ -1056,8 +1056,8 @@ function InspectionForm() {
                   </div>
 
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-REFERENCE-navy transition-colors h-64 flex flex-col justify-between">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Builder Conversation (Optional)</label>
-                    <p className="text-xs text-gray-500 mb-2">If you recorded a short discussion with the builder (context / clarifications), upload it here and we'll include a transcript in the report.</p>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Review Conversation (Optional)</label>
+                    <p className="text-xs text-gray-500 mb-2">If you recorded a short discussion with a participant (context / clarifications), upload it here and we'll include a transcript in the report.</p>
 
                     <div className="text-center mt-4">
                       <input
@@ -1161,7 +1161,7 @@ function InspectionForm() {
             {/* Conversation transcript (optional) */}
             <div className="mt-6">
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700">Builder Conversation (Optional)</label>
+                <label className="block text-sm font-medium text-gray-700">Review Conversation (Optional)</label>
                 <button
                   onClick={() => setIsEditingConversationTranscript(!isEditingConversationTranscript)}
                   className="text-sm text-REFERENCE-navy hover:underline flex items-center gap-1"
@@ -1177,7 +1177,7 @@ function InspectionForm() {
                   onChange={(e) => setConversationTranscript(e.target.value)}
                   rows="6"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-REFERENCE-navy focus:border-transparent font-mono text-sm"
-                  placeholder="Paste or type the builder-inspector conversation here (this will be included in the final report)."
+                  placeholder="Paste or type the review conversation here (this will be included in the final report)."
                 />
               ) : (
                 <div className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 whitespace-pre-wrap font-mono text-sm max-h-48 overflow-y-auto">
@@ -1225,7 +1225,7 @@ function InspectionForm() {
           {defects.length === 0 ? (
             <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded-lg">
               <AlertCircle className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-              <p className="text-gray-600">No defects detected. Go back to edit the transcript or start a new inspection.</p>
+              <p className="text-gray-600">No defects detected. Go back to edit the transcript or start a new report.</p>
             </div>
           ) : (
             <div className="space-y-6">
@@ -1422,7 +1422,7 @@ function InspectionForm() {
         <div className="text-center py-12">
           <CheckCircle className="w-20 h-20 mx-auto text-green-600 mb-6" />
           <h2 className="text-3xl font-bold text-REFERENCE-navy mb-4">Report Generated Successfully!</h2>
-          <p className="text-gray-600 mb-8">Your inspection report is ready to download.</p>
+          <p className="text-gray-600 mb-8">Your report is ready to download.</p>
           
           <div className="flex justify-center gap-4">
             <button
@@ -1437,7 +1437,7 @@ function InspectionForm() {
               onClick={handleStartNewInspection}
               className="px-8 py-3 border border-REFERENCE-navy text-REFERENCE-navy rounded-lg hover:bg-gray-50 transition-colors"
             >
-              Start New Inspection
+              Start New Report
             </button>
           </div>
         </div>

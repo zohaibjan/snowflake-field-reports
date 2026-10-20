@@ -257,7 +257,7 @@ def format_conversation_for_doc(inspection_data: dict) -> str:
         return ''
 
     block = []
-    block.append('CONVERSATION BETWEEN BUILDER AND INSPECTOR')
+    block.append('REVIEW CONVERSATION')
     block.append('\n')
     block.append(conversation_transcript)
     return '\n'.join(block)
@@ -265,7 +265,7 @@ def format_conversation_for_doc(inspection_data: dict) -> str:
 
 def generate_inspection_report(inspection_data):
     """
-    Generate a building inspection Word report for FIELD Inspection using template.
+    Generate a field observation Word report for Field Notes Studio using template.
     
     Replaces Jinja2-style placeholders in template.docx:
         {{ Inspector_Details }}
@@ -364,9 +364,9 @@ def generate_inspection_report(inspection_data):
     }
 
     # Add a dedicated conversation replacement so templates with {{ CONVERSATION_WITH_BUILDER }}
-    # can receive the builder-inspector conversation if provided or be removed otherwise.
+    # can receive the review conversation if provided or be removed otherwise.
     conversation_transcript = inspection_data.get('conversation_transcript') or ''
-    replacements['CONVERSATION_WITH_BUILDER'] = (f"CONVERSATION BETWEEN BUILDER AND INSPECTOR\n\n{conversation_transcript}" if conversation_transcript.strip() else '')
+    replacements['CONVERSATION_WITH_BUILDER'] = (f"REVIEW CONVERSATION\n\n{conversation_transcript}" if conversation_transcript.strip() else '')
     
     pass  # Do not log uploaded content or personal data.
     pass  # Do not log uploaded content or personal data.
@@ -505,10 +505,10 @@ def generate_inspection_report(inspection_data):
                         for p in cell.paragraphs:
                             all_text += '\n' + p.text
 
-            if conversation_transcript.strip() not in all_text and 'CONVERSATION BETWEEN BUILDER AND INSPECTOR' not in all_text:
+            if conversation_transcript.strip() not in all_text and 'REVIEW CONVERSATION' not in all_text:
                 # Append a clear heading and the conversation to the end of the document
                 doc.add_page_break()
-                h = doc.add_paragraph('CONVERSATION BETWEEN BUILDER AND INSPECTOR')
+                h = doc.add_paragraph('REVIEW CONVERSATION')
                 h.runs[0].bold = True
                 doc.add_paragraph(conversation_transcript)
                 pass  # Do not log uploaded content or personal data.
@@ -1146,15 +1146,15 @@ def generate_basic_report(inspection_data):
     doc = Document()
     
     # Title
-    title = doc.add_heading('Building Inspection Report', 0)
+    title = doc.add_heading('Field Observation Report', 0)
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     
-    # Inspector Details
-    doc.add_heading('Inspector Details', level=1)
+    # Reviewer Details
+    doc.add_heading('Reviewer Details', level=1)
     doc.add_paragraph(inspection_data.get('inspector_name', 'N/A'))
     
     # Contractor
-    doc.add_heading('Contractor Information', level=1)
+    doc.add_heading('Supplier Information', level=1)
     doc.add_paragraph(inspection_data.get('contractor_name', 'N/A'))
     
     # Site Address
@@ -1162,7 +1162,7 @@ def generate_basic_report(inspection_data):
     doc.add_paragraph(inspection_data.get('site_address', 'N/A'))
     
     # Notes
-    doc.add_heading('Inspection Notes', level=1)
+    doc.add_heading('Observation Notes', level=1)
     notes_text = inspection_data.get('notes', 'N/A')
     for line in notes_text.split('\n'):
         if line.strip():
@@ -1204,7 +1204,7 @@ def generate_word_report(feedback: dict, filename: str = "analysis_report") -> b
             section.right_margin = Inches(1)
         
         # Title
-        title = doc.add_heading('REFERENCE Licence Application Analysis Report', 0)
+        title = doc.add_heading('Field Notes Analysis Report', 0)
         title.alignment = WD_ALIGN_PARAGRAPH.CENTER
         
         # Subtitle with timestamp in AEST
@@ -1250,7 +1250,7 @@ def generate_word_report(feedback: dict, filename: str = "analysis_report") -> b
         
         # Add a professional disclaimer
         disclaimer = doc.add_paragraph()
-        disclaimer_run = disclaimer.add_run('IMPORTANT NOTICE: This is an AI-assisted analysis tool designed to support the REFERENCE licence application review process. While this system uses advanced artificial intelligence, all outputs must be independently verified by qualified professionals. This analysis does not replace human judgment, professional expertise, or synthetic demonstration assessment procedures. Users are responsible for ensuring accuracy and compliance with all applicable regulations.')
+        disclaimer_run = disclaimer.add_run('IMPORTANT NOTICE: This is an AI-assisted analysis tool designed to support the field observation review process. While this system uses advanced artificial intelligence, all outputs must be independently verified by qualified professionals. This analysis does not replace human judgment, professional expertise, or synthetic demonstration assessment procedures. Users are responsible for ensuring accuracy and compliance with all applicable regulations.')
         disclaimer_run.italic = True
         disclaimer_run.font.size = Pt(9)
         disclaimer_run.font.color.rgb = None  # Ensures it uses default text color
@@ -1263,12 +1263,6 @@ def generate_word_report(feedback: dict, filename: str = "analysis_report") -> b
             if assessment_text and assessment_text.strip():
                 # Remove AI prompt artifacts - more comprehensive filtering
                 patterns_to_remove = [
-                    'Certainly! Below is a model REFERENCE Medium-Rise Builder Licence Assessment Report. This template is based on your framework and can be tailored to a specific applicant by inserting their evidence and details.',
-                    'Certainly! Below is a model REFERENCE Low-Rise Builder Licence Assessment Report. This template is based on your framework and can be tailored to a specific applicant by inserting their evidence and details.',
-                    'Below is a model REFERENCE Medium-Rise Builder licence assessment report. This template is based on your framework and can be tailored to a specific applicant by inserting their evidence and details. For demonstration, I will use plausible, generic applicant evidence and highlight both strengths and gaps.',
-                    'Below is a model REFERENCE Low-Rise Builder licence assessment report. This template is based on your framework and can be tailored to a specific applicant by inserting their evidence and details. For demonstration, I will use plausible, generic applicant evidence and highlight both strengths and gaps.',
-                    'Below is a model REFERENCE Medium-Rise Builder licence assessment report.',
-                    'Below is a model REFERENCE Low-Rise Builder licence assessment report.',
                     'This template is based on your framework and can be tailored to a specific applicant by inserting their evidence and details.',
                     'For demonstration, I will use plausible, generic applicant evidence and highlight both strengths and gaps.',
                     'Certainly!',

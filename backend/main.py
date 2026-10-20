@@ -1,5 +1,5 @@
 """
-FastAPI Backend for FIELD Inspection Report Generator
+FastAPI Backend for Field Notes Studio Report Generator
 Modern API with audio transcription and report generation
 """
 import os
@@ -102,8 +102,8 @@ def format_inspection_data_simple(inspection_data):
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="FIELD Inspection API",
-    description="AI-powered building inspection reports with audio transcription",
+    title="Field Notes Studio API",
+    description="AI-assisted audio and photo reports with human review",
     version="1.0.0"
 )
 
@@ -188,7 +188,7 @@ class HealthResponse(BaseModel):
 async def root():
     """Root endpoint"""
     return {
-        "message": "FIELD Inspection API",
+        "message": "Field Notes Studio API",
         "version": "1.0.0",
         "docs": "/docs"
     }
@@ -398,7 +398,7 @@ async def submit_manual_transcript(
 @app.post("/api/upload-conversation")
 async def upload_conversation(audio_file: UploadFile = File(...)):
     """
-    Upload builder-inspector conversation audio file to Snowflake stage
+    Upload review conversation audio file to Snowflake stage
     """
     try:
         service = get_snowflake_service()
@@ -449,7 +449,7 @@ async def transcribe_conversation(
     stage_filename: str = Form(...)
 ):
     """
-    Transcribe builder-inspector conversation audio using Snowflake AI_TRANSCRIBE
+    Transcribe review conversation audio using Snowflake AI_TRANSCRIBE
     Returns only transcript (no AI analysis/summary)
     
     Args:
@@ -685,7 +685,7 @@ async def generate_report(
                 "site_address": site_address,
                 "other_contractors": other_contractors or "N/A",
                 "inspection_date": inspection_date or datetime.now().strftime("%Y-%m-%d"),
-                "notes": "Site inspection completed. No defects found. Site is compliant with applicable standards.",
+                "notes": "No observations were entered. This report does not establish compliance or certification.",
                 "structured_summary": {"defects": []},  # Empty defects for compliant site
                 "audio_file": audio_filename,
                 "main_site_image": main_site_image,

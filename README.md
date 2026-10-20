@@ -1,4 +1,4 @@
-# Snowflake Field Reports
+# Field Notes Studio
 
 A FastAPI and React reference application for turning audio notes and photographs into editable,
 structured observations and Word reports. Snowflake staged files, audio transcription and Cortex text/image processing.
@@ -53,7 +53,7 @@ python -m unittest discover -s tests -v
 npm run build
 ```
 
-5 offline tests pass for report generation, template metadata and API/CSRF behavior.
+7 offline tests pass for report generation, fallback/analysis export labels, template metadata and API/CSRF behavior.
 The Vite production build passes. Real audio inference, photo inference, live service credentials,
 and the full upload-to-report flow have not been validated against a live account in this release.
 This is a local demo: bind the API to loopback. Add proper authentication, isolation, quotas and
